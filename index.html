@@ -1,246 +1,370 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Big One Scanner</title>
-<style>
-:root {
-  color-scheme: dark;
-  --bg: #080b12;
-  --panel: #111722;
-  --green: #19e68c;
-  --red: #ff3048;
-  --gold: #ffbf48;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: radial-gradient(ellipse at 50% 15%, #25202b, var(--bg) 70%);
-  color: #f3f5fa;
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-}
-header {
-  padding: 24px 16px;
-  text-align: center;
-  border-bottom: 1px solid #252c39;
-}
-.brand {
-  color: var(--gold);
-  letter-spacing: 4px;
-  font-size: 12px;
-  font-weight: bold;
-}
-h1 { margin: 10px 0 6px; font-size: clamp(26px, 5vw, 42px); }
-.subtitle { color: #9aa5b8; font-size: 13px; }
-main { max-width: 1050px; margin: auto; padding: 22px 16px; }
-.hero {
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  padding: 22px 12px 26px;
-  border: 1px solid #303443;
-  border-radius: 20px;
-  background:
-    radial-gradient(ellipse at 50% 40%, #421a27 0%, transparent 46%),
-    linear-gradient(135deg, #101925, #080a10 70%);
-  box-shadow: 0 18px 60px #0008;
-}
-.swan {
-  font-size: clamp(95px, 20vw, 170px);
-  line-height: 1.15;
-  filter: drop-shadow(0 0 20px #ff173955);
-}
-.swan-caption {
-  color: #ff586a;
-  font-size: 11px;
-  letter-spacing: 3px;
-  font-weight: bold;
-}
-.battle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 12px;
-}
-.animal { width: 22%; }
-.animal .emoji { font-size: clamp(42px, 9vw, 76px); }
-.bull { color: var(--green); }
-.bear { color: var(--red); }
-.animal-label {
-  font-size: 11px;
-  letter-spacing: 2px;
-  font-weight: bold;
-}
-.gauge-area { flex: 1; min-width: 0; }
-.gauge {
-  height: 20px;
-  border: 1px solid #687184;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #13dc7c, #e9d54d 50%, #ff3048);
-  position: relative;
-  box-shadow: 0 0 18px #ff304822;
-}
-.marker {
-  position: absolute;
-  left: 35%;
-  top: 50%;
-  width: 34px;
-  height: 34px;
-  transform: translate(-50%, -50%);
-  background: #10131b;
-  border: 3px solid white;
-  border-radius: 50%;
-  box-shadow: 0 0 16px #fff6;
-}
-.ticks {
-  display: flex;
-  justify-content: space-between;
-  color: #9aa5b8;
-  font-size: 10px;
-  margin-top: 13px;
-}
-.score { font-size: clamp(40px, 9vw, 68px); font-weight: 800; margin-top: 28px; }
-.level { font-size: 14px; font-weight: bold; letter-spacing: 2px; }
-.explain { color: #aab3c3; font-size: 12px; line-height: 1.6; margin: 12px auto 0; max-width: 500px; }
-.panel {
-  background: var(--panel);
-  border: 1px solid #293142;
-  border-radius: 14px;
-  padding: 18px;
-  margin-top: 16px;
-}
-h2 { font-size: 15px; margin: 0 0 14px; }
-input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
-.small { color: #9aa5b8; font-size: 12px; line-height: 1.6; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.metric { background: #0b1019; padding: 13px 8px; border-radius: 10px; text-align: center; }
-.metric strong { display: block; font-size: 19px; margin-bottom: 7px; }
-.metric span { color: #9aa5b8; font-size: 11px; }
-.status { color: var(--gold); }
-footer { text-align: center; color: #717d90; padding: 25px 10px; font-size: 11px; }
-@media(max-width:560px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-  .animal-label { letter-spacing: 1px; font-size: 9px; }
-  .hero { padding-left: 7px; padding-right: 7px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big One Scanner - Dashboard</title>
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      
+      /* Palette Colori Rischio */
+      --color-bull: #10b981;
+      --color-bear: #ef4444;
+      --color-low: #10b981;
+      --color-mod: #f59e0b;
+      --color-high: #f97316;
+      --color-vhigh: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
+
+    /* Header e Scritte Laterali */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .brand-group h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-group h1 span {
+      font-weight: 300;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .quote-box {
+      max-width: 220px;
+      text-align: right;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Composizione Grafica Animali */
+    .arena {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      align-items: flex-end;
+      gap: 10px;
+      margin-top: -20px;
+    }
+
+    .col-animal {
+      text-align: center;
+    }
+
+    .col-animal img {
+      width: 100%;
+      height: auto;
+      max-height: 280px;
+      object-fit: contain;
+    }
+
+    .col-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      padding-bottom: 20px;
+    }
+
+    .col-center img {
+      max-height: 220px;
+      margin-bottom: 10px;
+    }
+
+    /* Monitoraggio del Rischio Centrale */
+    .sentiment-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .sentiment-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+      margin-bottom: 15px;
+    }
+
+    .counter {
+      font-size: 54px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    /* Barra del Cursore */
+    .gauge-wrapper {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    .gauge-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+      margin-bottom: 8px;
+    }
+
+    .label-bull { color: var(--color-bull); font-weight: 700; font-size: 12px; letter-spacing: 1px; }
+    .label-bear { color: var(--color-bear); font-weight: 700; font-size: 12px; letter-spacing: 1px; }
+
+    .gauge-bar {
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
+      position: relative;
+    }
+
+    .gauge-pointer {
+      position: absolute;
+      top: 50%;
+      left: 52%; /* Allineato all'immagine */
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: #334155;
+      border: 4px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .gauge-center-tick {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 8px;
+    }
+
+    /* Griglia Orizzonti Temporali */
+    .horizon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .card-time {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .time-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .time-value {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .time-status {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Classi di stato colori */
+    .status-low { color: var(--color-low); }
+    .status-mod { color: var(--color-mod); }
+    .status-high { color: var(--color-high); }
+    .status-vhigh { color: var(--color-vhigh); }
+
+    /* Footer di chiusura */
+    footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+    }
+
+    /* Ottimizzazione Mobile */
+    @media (max-width: 768px) {
+      .arena {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .col-center {
+        grid-row: 1;
+      }
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .quote-box {
+        text-align: left;
+      }
+      .horizon-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="brand">MARKET INTELLIGENCE</div>
-  <h1>BIG ONE SCANNER</h1>
-  <div class="subtitle">Il rischio prima del rumore.</div>
-</header>
 
-<main>
-  <section class="hero">
-    <div class="swan">🦢</div>
-    <div class="swan-caption">THE BLACK SWAN · EVENT RISK</div>
+  <div class="container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="brand-group">
+        <h1>📈 BIG ONE <span>SCANNER</span></h1>
+        <div class="nav-links">Sentiment &nbsp;|&nbsp; Analisi &nbsp;|&nbsp; Opportunità</div>
+      </div>
+      <div class="quote-box">
+        "Non è una questione di prevedere il futuro, ma di prepararsi al peggio."
+      </div>
+    </header>
 
-    <div class="battle">
-      <div class="animal bull">
-        <div class="emoji">🐂</div>
-        <div class="animal-label">TORO</div>
+    <!-- Composizione degli Animali e dell'Anatomia Grafica -->
+    <div class="arena">
+      <!-- Toro a Sinistra -->
+      <div class="col-animal">
+        <!-- Inserisci qui l'immagine ritagliata della testa del toro -->
+        <img src="https://placeholder.com" alt="Bull">
       </div>
-      <div class="gauge-area">
-        <div class="gauge">
-          <div class="marker" id="marker"></div>
-        </div>
-        <div class="ticks">
-          <span>0%</span><span>25%</span><span>50%</span>
-          <span>75%</span><span>100%</span>
-        </div>
+
+      <!-- Cigno Nero Centrale con Contatore Rischio -->
+      <div class="col-center">
+        <!-- Inserisci qui l'immagine ritagliata del cigno nero -->
+        <img src="https://placeholder.com" alt="Black Swan">
+        
+        <div class="sentiment-title">Market Sentiment</div>
+        <div class="sentiment-subtitle">Big One Risk</div>
+        <div class="counter">52%</div>
       </div>
-      <div class="animal bear">
-        <div class="emoji">🐻</div>
-        <div class="animal-label">ORSO</div>
+
+      <!-- Orso a Destra -->
+      <div class="col-animal">
+        <!-- Inserisci qui l'immagine ritagliata della testa dell'orso -->
+        <img src="https://placeholder.com" alt="Bear">
       </div>
     </div>
 
-    <div class="score" id="score">35%</div>
-    <div class="level status" id="level">PRE-BIG ONE</div>
-    <p class="explain" id="explain">
-      Modalità demo: il valore non è una misura reale del rischio di mercato.
-    </p>
-  </section>
-
-  <section class="panel">
-    <h2>🧪 Simulatore del rischio</h2>
-    <p class="small">Sposta il cursore per provare la barra. Il valore è dimostrativo e non usa ancora dati finanziari reali.</p>
-    <input id="risk" type="range" min="0" max="100" value="35">
-    <div class="small">Regola il rischio da 0% a 100%.</div>
-  </section>
-
-  <section class="panel">
-    <h2>ORIZZONTI DI RISCHIO</h2>
-    <div class="grid">
-      <div class="metric"><strong id="day">35%</strong><span>Giornata</span></div>
-      <div class="metric"><strong id="h12">35%</strong><span>12 ore</span></div>
-      <div class="metric"><strong id="h24">35%</strong><span>24 ore</span></div>
-      <div class="metric"><strong id="h48">35%</strong><span>48 ore</span></div>
+    <!-- Barra Cursore Indicatore Livello Rischio -->
+    <div class="gauge-wrapper">
+      <div class="gauge-labels">
+        <span class="label-bull">🐂 BULL</span>
+        <span class="label-bear">BEAR 🐻</span>
+      </div>
+      <div class="gauge-bar">
+        <div class="gauge-pointer"></div>
+      </div>
+      <div class="gauge-center-tick">| <br> Neutrale</div>
     </div>
-    <p class="small">Valori dimostrativi: saranno sostituiti dal motore di analisi quando collegheremo le fonti.</p>
-  </section>
 
-  <section class="panel">
-    <h2>📡 QUADRO DI MERCATO</h2>
-    <div class="grid">
-      <div class="metric"><strong>—</strong><span>VIX / VVIX</span></div>
-      <div class="metric"><strong>—</strong><span>Nasdaq / S&P 500</span></div>
-      <div class="metric"><strong>—</strong><span>Treasury / credito</span></div>
-      <div class="metric"><strong>—</strong><span>Oro / petrolio</span></div>
+    <!-- Pannelli Orizzonte Temporale Rischio -->
+    <div class="horizon-grid">
+      <!-- 0 Ore -->
+      <div class="card-time">
+        <div class="time-title">🕒 0h</div>
+        <div class="time-value status-low">45%</div>
+        <div class="time-status status-low">Rischio Basso</div>
+      </div>
+      
+      <!-- 12 Ore -->
+      <div class="card-time">
+        <div class="time-title">🕒 12h</div>
+        <div class="time-value status-mod">55%</div>
+        <div class="time-status status-mod">Rischio Moderato</div>
+      </div>
+
+      <!-- 24 Ore -->
+      <div class="card-time">
+        <div class="time-title">🕒 24h</div>
+        <div class="time-value status-high">68%</div>
+        <div class="time-status status-high">Rischio Alto</div>
+      </div>
+
+      <!-- 48 Ore -->
+      <div class="card-time">
+        <div class="time-title">🕒 48h</div>
+        <div class="time-value status-vhigh">82%</div>
+        <div class="time-status status-vhigh">Rischio Molto Alto</div>
+      </div>
     </div>
-    <p class="small">Dati non ancora collegati. Nessun valore viene presentato come quotazione aggiornata.</p>
-  </section>
 
-  <section class="panel">
-    <h2>🧠 ANALISI INTELLIGENTE</h2>
-    <p class="small">In attesa del collegamento alle fonti: notizie, dichiarazioni politiche, macroeconomia, liquidità e correlazioni saranno analizzate qui, separando fatti confermati e interpretazioni.</p>
-  </section>
-</main>
+    <!-- Scritte Footer Istituzionali -->
+    <footer>
+      <span>Informazione</span>
+      <span>•</span>
+      <span>Consapevolezza</span>
+      <span>•</span>
+      <span>Decisioni Migliori</span>
+    </footer>
 
-<footer>
-  BIG ONE SCANNER · PROTOTIPO INIZIALE · NON È UNA PREVISIONE FINANZIARIA
-</footer>
+  </div>
 
-<script>
-const slider = document.getElementById('risk');
-function update() {
-  const v = Number(slider.value);
-  document.getElementById('score').textContent = v + '%';
-  document.getElementById('marker').style.left = v + '%';
-  ['day','h12','h24','h48'].forEach(id => {
-    document.getElementById(id).textContent = v + '%';
-  });
-
-  let level, color, explanation;
-  if (v < 20) {
-    level = 'NORMAL'; color = '#19e68c';
-    explanation = 'Rischio dimostrativo contenuto. Non esclude eventi inattesi.';
-  } else if (v < 35) {
-    level = 'WATCH'; color = '#c5df54';
-    explanation = 'Attenzione: in questa demo il livello indica un rischio crescente.';
-  } else if (v < 50) {
-    level = 'PRE-BIG ONE'; color = '#ffbf48';
-    explanation = 'Allerta elevata nella simulazione. Non è una valutazione reale.';
-  } else if (v < 70) {
-    level = 'BIG ONE'; color = '#ff713d';
-    explanation = 'Stress elevato nella simulazione. Verificare i dati prima di agire.';
-  } else {
-    level = 'PANIC-CAPITULATION'; color = '#ff3048';
-    explanation = 'Livello massimo della demo. Non indica che sia in corso un crollo.';
-  }
-  document.getElementById('level').textContent = level;
-  document.getElementById('level').style.color = color;
-  document.getElementById('score').style.color = color;
-  document.getElementById('explain').textContent = explanation;
-}
-slider.addEventListener('input', update);
-update();
-</script>
 </body>
 </html>
