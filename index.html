@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Big One Scanner - Dashboard</title>
+  <title>Big One Scanner - Dashboard Interattiva</title>
   <style>
     :root {
       --bg-main: #f8fafc;
@@ -12,9 +12,7 @@
       --text-main: #0f172a;
       --text-muted: #64748b;
       
-      /* Palette Colori Rischio */
-      --color-bull: #10b981;
-      --color-bear: #ef4444;
+      /* Palette Colori Dinamici */
       --color-low: #10b981;
       --color-mod: #f59e0b;
       --color-high: #f97316;
@@ -49,7 +47,6 @@
       position: relative;
     }
 
-    /* Header e Scritte Laterali */
     header {
       display: flex;
       justify-content: space-between;
@@ -89,7 +86,6 @@
       line-height: 1.4;
     }
 
-    /* Composizione Grafica Animali */
     .arena {
       display: grid;
       grid-template-columns: 1fr 1.2fr 1fr;
@@ -123,7 +119,6 @@
       margin-bottom: 10px;
     }
 
-    /* Monitoraggio del Rischio Centrale */
     .sentiment-title {
       font-size: 13px;
       font-weight: 700;
@@ -145,9 +140,9 @@
       font-size: 54px;
       font-weight: 800;
       margin-bottom: 20px;
+      transition: color 0.3s ease;
     }
 
-    /* Barra del Cursore */
     .gauge-wrapper {
       width: 100%;
       max-width: 600px;
@@ -162,8 +157,8 @@
       margin-bottom: 8px;
     }
 
-    .label-bull { color: var(--color-bull); font-weight: 700; font-size: 12px; letter-spacing: 1px; }
-    .label-bear { color: var(--color-bear); font-weight: 700; font-size: 12px; letter-spacing: 1px; }
+    .label-bull { color: #10b981; font-weight: 700; font-size: 12px; letter-spacing: 1px; }
+    .label-bear { color: #ef4444; font-weight: 700; font-size: 12px; letter-spacing: 1px; }
 
     .gauge-bar {
       height: 12px;
@@ -175,7 +170,7 @@
     .gauge-pointer {
       position: absolute;
       top: 50%;
-      left: 52%; /* Allineato all'immagine */
+      left: 52%; 
       transform: translate(-50%, -50%);
       width: 20px;
       height: 20px;
@@ -183,6 +178,7 @@
       border: 4px solid #ffffff;
       border-radius: 50%;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: left 0.2s ease-out;
     }
 
     .gauge-center-tick {
@@ -194,7 +190,6 @@
       margin-top: 8px;
     }
 
-    /* Griglia Orizzonti Temporali */
     .horizon-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -208,6 +203,7 @@
       border-radius: 14px;
       padding: 16px;
       text-align: center;
+      transition: all 0.3s ease;
     }
 
     .time-title {
@@ -231,13 +227,31 @@
       font-weight: 600;
     }
 
-    /* Classi di stato colori */
-    .status-low { color: var(--color-low); }
-    .status-mod { color: var(--color-mod); }
-    .status-high { color: var(--color-high); }
-    .status-vhigh { color: var(--color-vhigh); }
+    /* Area di Controllo Interattiva */
+    .simulator-control {
+      margin-top: 30px;
+      padding: 15px;
+      background: var(--bg-main);
+      border: 1px dashed var(--border-color);
+      border-radius: 14px;
+      text-align: center;
+    }
 
-    /* Footer di chiusura */
+    .simulator-control label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .simulator-control input[type="range"] {
+      width: 100%;
+      max-width: 400px;
+      accent-color: #334155;
+      cursor: pointer;
+    }
+
     footer {
       margin-top: 30px;
       display: flex;
@@ -250,25 +264,12 @@
       color: var(--text-muted);
     }
 
-    /* Ottimizzazione Mobile */
     @media (max-width: 768px) {
-      .arena {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-      .col-center {
-        grid-row: 1;
-      }
-      header {
-        flex-direction: column;
-        gap: 15px;
-      }
-      .quote-box {
-        text-align: left;
-      }
-      .horizon-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .arena { grid-template-columns: 1fr; gap: 30px; }
+      .col-center { grid-row: 1; }
+      header { flex-direction: column; gap: 15px; }
+      .quote-box { text-align: left; }
+      .horizon-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -276,7 +277,6 @@
 
   <div class="container">
     
-    <!-- Top Header -->
     <header>
       <div class="brand-group">
         <h1>📈 BIG ONE <span>SCANNER</span></h1>
@@ -287,75 +287,69 @@
       </div>
     </header>
 
-    <!-- Composizione degli Animali e dell'Anatomia Grafica -->
     <div class="arena">
-      <!-- Toro a Sinistra -->
       <div class="col-animal">
-        <!-- Inserisci qui l'immagine ritagliata della testa del toro -->
         <img src="https://placeholder.com" alt="Bull">
       </div>
 
-      <!-- Cigno Nero Centrale con Contatore Rischio -->
       <div class="col-center">
-        <!-- Inserisci qui l'immagine ritagliata del cigno nero -->
         <img src="https://placeholder.com" alt="Black Swan">
-        
         <div class="sentiment-title">Market Sentiment</div>
         <div class="sentiment-subtitle">Big One Risk</div>
-        <div class="counter">52%</div>
+        <!-- ID per l'aggiornamento JavaScript -->
+        <div class="counter" id="main-counter">52%</div>
       </div>
 
-      <!-- Orso a Destra -->
       <div class="col-animal">
-        <!-- Inserisci qui l'immagine ritagliata della testa dell'orso -->
         <img src="https://placeholder.com" alt="Bear">
       </div>
     </div>
 
-    <!-- Barra Cursore Indicatore Livello Rischio -->
     <div class="gauge-wrapper">
       <div class="gauge-labels">
         <span class="label-bull">🐂 BULL</span>
         <span class="label-bear">BEAR 🐻</span>
       </div>
       <div class="gauge-bar">
-        <div class="gauge-pointer"></div>
+        <!-- ID per spostare il puntatore -->
+        <div class="gauge-pointer" id="gauge-pointer"></div>
       </div>
       <div class="gauge-center-tick">| <br> Neutrale</div>
     </div>
 
-    <!-- Pannelli Orizzonte Temporale Rischio -->
+    <!-- Griglia degli Orizzonti Temporali Dinamici -->
     <div class="horizon-grid">
-      <!-- 0 Ore -->
-      <div class="card-time">
+      <div class="card-time" id="card-0h">
         <div class="time-title">🕒 0h</div>
-        <div class="time-value status-low">45%</div>
-        <div class="time-status status-low">Rischio Basso</div>
+        <div class="time-value" id="val-0h">--</div>
+        <div class="time-status" id="status-0h">--</div>
       </div>
       
-      <!-- 12 Ore -->
-      <div class="card-time">
+      <div class="card-time" id="card-12h">
         <div class="time-title">🕒 12h</div>
-        <div class="time-value status-mod">55%</div>
-        <div class="time-status status-mod">Rischio Moderato</div>
+        <div class="time-value" id="val-12h">--</div>
+        <div class="time-status" id="status-12h">--</div>
       </div>
 
-      <!-- 24 Ore -->
-      <div class="card-time">
+      <div class="card-time" id="card-24h">
         <div class="time-title">🕒 24h</div>
-        <div class="time-value status-high">68%</div>
-        <div class="time-status status-high">Rischio Alto</div>
+        <div class="time-value" id="val-24h">--</div>
+        <div class="time-status" id="status-24h">--</div>
       </div>
 
-      <!-- 48 Ore -->
-      <div class="card-time">
+      <div class="card-time" id="card-48h">
         <div class="time-title">🕒 48h</div>
-        <div class="time-value status-vhigh">82%</div>
-        <div class="time-status status-vhigh">Rischio Molto Alto</div>
+        <div class="time-value" id="val-48h">--</div>
+        <div class="time-status" id="status-48h">--</div>
       </div>
     </div>
 
-    <!-- Scritte Footer Istituzionali -->
+    <!-- Pannello Slider per simulare il funzionamento -->
+    <div class="simulator-control">
+      <label for="risk-slider">🧪 Simulatore di Rischio Live (Trascina per testare l'interfaccia)</label>
+      <input type="range" id="risk-slider" min="0" max="100" value="52">
+    </div>
+
     <footer>
       <span>Informazione</span>
       <span>•</span>
@@ -366,5 +360,26 @@
 
   </div>
 
-</body>
-</html>
+  <!-- LOGICA JAVASCRIPT PER RENDERE TUTTO DINAMICO -->
+  <script>
+    const slider = document.getElementById('risk-slider');
+    const mainCounter = document.getElementById('main-counter');
+    const pointer = document.getElementById('gauge-pointer');
+
+    // Configurazione dei profili di rischio per soglia percentuale
+    const getStatusDetails = (percentage) => {
+      if (percentage < 30) return { text: 'Rischio Basso', color: 'var(--color-low)' };
+      if (percentage < 60) return { text: 'Rischio Moderato', color: 'var(--color-mod)' };
+      if (percentage < 80) return { text: 'Rischio Alto', color: 'var(--color-high)' };
+      return { text: 'Rischio Molto Alto', color: 'var(--color-vhigh)' };
+    };
+
+    // Funzione per mantenere i valori dei calcoli tra 0 e 100
+    const clamp = (val) => Math.min(Math.max(Math.round(val), 0), 100);
+
+    function updateDashboard() {
+      const currentRisk = parseInt(slider.value);
+
+      // 1. Aggiorna contatore centrale e posizione della lancetta
+      mainCounter.textContent = `${currentRisk}%`;
+      
