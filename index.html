@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Big One Scanner - Dashboard Interattiva</title>
+  <title>Big One Scanner - AI Dashboard</title>
   <style>
     :root {
       --bg-main: #f8fafc;
@@ -12,21 +12,17 @@
       --text-main: #0f172a;
       --text-muted: #64748b;
       
-      /* Palette Colori Dinamici */
+      /* Palette Colori Rischio */
       --color-low: #10b981;
       --color-mod: #f59e0b;
       --color-high: #f97316;
       --color-vhigh: #ef4444;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       background-color: var(--bg-main);
       color: var(--text-main);
       min-height: 100vh;
@@ -44,238 +40,90 @@
       border-radius: 24px;
       padding: 40px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-      position: relative;
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-    }
-
-    .brand-group h1 {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-group h1 span {
-      font-weight: 300;
-      color: var(--text-muted);
-    }
-
-    .nav-links {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    .quote-box {
-      max-width: 220px;
-      text-align: right;
-      font-size: 12px;
-      font-style: italic;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .arena {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      align-items: flex-end;
-      gap: 10px;
-      margin-top: -20px;
-    }
-
-    .col-animal {
-      text-align: center;
-    }
-
-    .col-animal img {
-      width: 100%;
-      height: auto;
-      max-height: 280px;
-      object-fit: contain;
-    }
-
-    .col-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      height: 100%;
-      padding-bottom: 20px;
-    }
-
-    .col-center img {
-      max-height: 220px;
-      margin-bottom: 10px;
-    }
-
-    .sentiment-title {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      text-align: center;
-    }
-
-    .sentiment-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-top: 2px;
-      margin-bottom: 15px;
-    }
-
-    .counter {
-      font-size: 54px;
-      font-weight: 800;
-      margin-bottom: 20px;
-      transition: color 0.3s ease;
-    }
-
-    .gauge-wrapper {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-
-    .gauge-labels {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 10px;
-      margin-bottom: 8px;
-    }
-
-    .label-bull { color: #10b981; font-weight: 700; font-size: 12px; letter-spacing: 1px; }
-    .label-bear { color: #ef4444; font-weight: 700; font-size: 12px; letter-spacing: 1px; }
-
-    .gauge-bar {
-      height: 12px;
-      border-radius: 6px;
-      background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
-      position: relative;
-    }
-
-    .gauge-pointer {
-      position: absolute;
-      top: 50%;
-      left: 52%; 
-      transform: translate(-50%, -50%);
-      width: 20px;
-      height: 20px;
-      background: #334155;
-      border: 4px solid #ffffff;
-      border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      transition: left 0.2s ease-out;
-    }
-
-    .gauge-center-tick {
-      text-align: center;
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 8px;
-    }
-
-    .horizon-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-top: 10px;
-    }
-
-    .card-time {
-      background: var(--bg-main);
+    /* API Config Panel */
+    .api-panel {
+      background: #f1f5f9;
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 16px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .time-title {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      margin-bottom: 8px;
-    }
-
-    .time-value {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .time-status {
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    /* Area di Controllo Interattiva */
-    .simulator-control {
-      margin-top: 30px;
+      border-radius: 12px;
       padding: 15px;
-      background: var(--bg-main);
-      border: 1px dashed var(--border-color);
-      border-radius: 14px;
-      text-align: center;
-    }
-
-    .simulator-control label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .simulator-control input[type="range"] {
-      width: 100%;
-      max-width: 400px;
-      accent-color: #334155;
-      cursor: pointer;
-    }
-
-    footer {
-      margin-top: 30px;
+      margin-bottom: 25px;
       display: flex;
-      justify-content: center;
-      gap: 40px;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
+      gap: 15px;
+      flex-wrap: wrap;
     }
+    .api-field { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 5px; }
+    .api-field label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+    .api-field input { padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; }
 
-    @media (max-width: 768px) {
-      .arena { grid-template-columns: 1fr; gap: 30px; }
-      .col-center { grid-row: 1; }
-      header { flex-direction: column; gap: 15px; }
-      .quote-box { text-align: left; }
-      .horizon-grid { grid-template-columns: repeat(2, 1fr); }
+    header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+    .brand-group h1 { font-size: 28px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+    .brand-group h1 span { font-weight: 300; color: var(--text-muted); }
+    .nav-links { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 6px; }
+    .quote-box { max-width: 220px; text-align: right; font-size: 12px; font-style: italic; color: var(--text-muted); line-height: 1.4; }
+
+    .arena { display: grid; grid-template-columns: 1fr 1.2fr 1fr; align-items: flex-end; gap: 10px; margin-top: -20px; }
+    .col-animal { text-align: center; }
+    .col-animal img { width: 100%; height: auto; max-height: 280px; object-fit: contain; }
+    .col-center { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; padding-bottom: 20px; }
+    .col-center img { max-height: 220px; margin-bottom: 10px; }
+
+    .sentiment-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+    .sentiment-subtitle { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; margin-bottom: 15px; }
+    .counter { font-size: 54px; font-weight: 800; margin-bottom: 20px; transition: color 0.3s ease; }
+
+    .gauge-wrapper { width: 100%; max-width: 600px; margin: 0 auto 30px; }
+    .gauge-labels { display: flex; justify-content: space-between; padding: 0 10px; margin-bottom: 8px; font-size: 12px; font-weight: 700; }
+    .label-bull { color: #10b981; } .label-bear { color: #ef4444; }
+    .gauge-bar { height: 12px; border-radius: 6px; background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%); position: relative; }
+    .gauge-pointer { position: absolute; top: 50%; left: 52%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: #334155; border: 4px solid #ffffff; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: left 0.2s ease-out; }
+    .gauge-center-tick { text-align: center; font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 8px; }
+
+    .horizon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 10px; }
+    .card-time { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; text-align: center; }
+    .time-title { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .time-value { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .time-status { font-size: 11px; font-weight: 600; }
+
+    /* AI Analysis Response Panel */
+    .ai-panel-response {
+      margin-top: 30px;
+      padding: 25px;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
     }
+    .ai-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+    .ai-title { font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .ai-selectors { display: flex; gap: 10px; }
+    .ai-btn { padding: 6px 12px; font-size: 11px; font-weight: 700; border: 1px solid var(--border-color); background: white; border-radius: 6px; cursor: pointer; }
+    .ai-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+    .ai-content { font-size: 13px; line-height: 1.6; color: #334155; min-height: 60px; }
+    
+    .simulator-control { margin-top: 30px; padding: 15px; background: var(--bg-main); border: 1px dashed var(--border-color); border-radius: 14px; text-align: center; }
+    .simulator-control label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px; }
+    .simulator-control input { width: 100%; max-width: 400px; accent-color: #334155; cursor: pointer; }
+
+    footer { margin-top: 30px; display: flex; justify-content: center; gap: 40px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); }
+    @media (max-width: 768px) { .arena { grid-template-columns: 1fr; gap: 30px; } .col-center { grid-row: 1; } header { flex-direction: column; gap: 15px; } .quote-box { text-align: left; } .horizon-grid { grid-template-columns: repeat(2, 1fr); } }
   </style>
 </head>
 <body>
 
   <div class="container">
+    
+    <!-- Pannello Configurazione Chiavi API Chiare -->
+    <div class="api-panel">
+      <div class="api-field">
+        <label>OPENAI API KEY (ChatGPT)</label>
+        <input type="password" id="openai-key" placeholder="sk-proj-...">
+      </div>
+      <div class="api-field">
+        <label>GOOGLE GEMINI API KEY</label>
+        <input type="password" id="gemini-key" placeholder="AIzaSy...">
+      </div>
+    </div>
     
     <header>
       <div class="brand-group">
@@ -288,98 +136,59 @@
     </header>
 
     <div class="arena">
-      <div class="col-animal">
-        <img src="https://placeholder.com" alt="Bull">
-      </div>
-
+      <div class="col-animal"><img src="https://placeholder.com" alt="Bull"></div>
       <div class="col-center">
         <img src="https://placeholder.com" alt="Black Swan">
         <div class="sentiment-title">Market Sentiment</div>
         <div class="sentiment-subtitle">Big One Risk</div>
-        <!-- ID per l'aggiornamento JavaScript -->
         <div class="counter" id="main-counter">52%</div>
       </div>
-
-      <div class="col-animal">
-        <img src="https://placeholder.com" alt="Bear">
-      </div>
+      <div class="col-animal"><img src="https://placeholder.com" alt="Bear"></div>
     </div>
 
     <div class="gauge-wrapper">
-      <div class="gauge-labels">
-        <span class="label-bull">🐂 BULL</span>
-        <span class="label-bear">BEAR 🐻</span>
-      </div>
-      <div class="gauge-bar">
-        <!-- ID per spostare il puntatore -->
-        <div class="gauge-pointer" id="gauge-pointer"></div>
-      </div>
+      <div class="gauge-labels"><span class="label-bull">🐂 BULL</span><span class="label-bear">BEAR 🐻</span></div>
+      <div class="gauge-bar"><div class="gauge-pointer" id="gauge-pointer"></div></div>
       <div class="gauge-center-tick">| <br> Neutrale</div>
     </div>
 
-    <!-- Griglia degli Orizzonti Temporali Dinamici -->
     <div class="horizon-grid">
-      <div class="card-time" id="card-0h">
-        <div class="time-title">🕒 0h</div>
-        <div class="time-value" id="val-0h">--</div>
-        <div class="time-status" id="status-0h">--</div>
-      </div>
-      
-      <div class="card-time" id="card-12h">
-        <div class="time-title">🕒 12h</div>
-        <div class="time-value" id="val-12h">--</div>
-        <div class="time-status" id="status-12h">--</div>
-      </div>
+      <div class="card-time"><div class="time-title">🕒 0h</div><div class="time-value" id="val-0h">--</div><div class="time-status" id="status-0h">--</div></div>
+      <div class="card-time"><div class="time-title">🕒 12h</div><div class="time-value" id="val-12h">--</div><div class="time-status" id="status-12h">--</div></div>
+      <div class="card-time"><div class="time-title">🕒 24h</div><div class="time-value" id="val-24h">--</div><div class="time-status" id="status-24h">--</div></div>
+      <div class="card-time"><div class="time-title">🕒 48h</div><div class="time-value" id="val-48h">--</div><div class="time-status" id="status-48h">--</div></div>
+    </div>
 
-      <div class="card-time" id="card-24h">
-        <div class="time-title">🕒 24h</div>
-        <div class="time-value" id="val-24h">--</div>
-        <div class="time-status" id="status-24h">--</div>
+    <!-- Pannello di Analisi Algoritmica con IA -->
+    <div class="ai-panel-response">
+      <div class="ai-header">
+        <div class="ai-title">🧠 Analisi Intelligente AI</div>
+        <div class="ai-selectors">
+          <button class="ai-btn active" id="btn-chatgpt" onclick="setEngine('chatgpt')">ChatGPT</button>
+          <button class="ai-btn" id="btn-gemini" onclick="setEngine('gemini')">Gemini</button>
+        </div>
       </div>
-
-      <div class="card-time" id="card-48h">
-        <div class="time-title">🕒 48h</div>
-        <div class="time-value" id="val-48h">--</div>
-        <div class="time-status" id="status-48h">--</div>
+      <div class="ai-content" id="ai-response-text">
+        Seleziona un livello di rischio sotto e rilascia il cursore per generare un'analisi predittiva tramite Intelligenza Artificiale...
       </div>
     </div>
 
-    <!-- Pannello Slider per simulare il funzionamento -->
     <div class="simulator-control">
-      <label for="risk-slider">🧪 Simulatore di Rischio Live (Trascina per testare l'interfaccia)</label>
+      <label for="risk-slider">🧪 Simulatore di Rischio Live</label>
       <input type="range" id="risk-slider" min="0" max="100" value="52">
     </div>
 
-    <footer>
-      <span>Informazione</span>
-      <span>•</span>
-      <span>Consapevolezza</span>
-      <span>•</span>
-      <span>Decisioni Migliori</span>
-    </footer>
-
+    <footer><span>Informazione</span><span>•</span><span>Consapevolezza</span><span>•</span><span>Decisioni Migliori</span></footer>
   </div>
 
-  <!-- LOGICA JAVASCRIPT PER RENDERE TUTTO DINAMICO -->
   <script>
     const slider = document.getElementById('risk-slider');
     const mainCounter = document.getElementById('main-counter');
     const pointer = document.getElementById('gauge-pointer');
+    const aiContent = document.getElementById('ai-response-text');
+    
+    let activeEngine = 'chatgpt';
 
-    // Configurazione dei profili di rischio per soglia percentuale
-    const getStatusDetails = (percentage) => {
-      if (percentage < 30) return { text: 'Rischio Basso', color: 'var(--color-low)' };
-      if (percentage < 60) return { text: 'Rischio Moderato', color: 'var(--color-mod)' };
-      if (percentage < 80) return { text: 'Rischio Alto', color: 'var(--color-high)' };
-      return { text: 'Rischio Molto Alto', color: 'var(--color-vhigh)' };
-    };
-
-    // Funzione per mantenere i valori dei calcoli tra 0 e 100
-    const clamp = (val) => Math.min(Math.max(Math.round(val), 0), 100);
-
-    function updateDashboard() {
-      const currentRisk = parseInt(slider.value);
-
-      // 1. Aggiorna contatore centrale e posizione della lancetta
-      mainCounter.textContent = `${currentRisk}%`;
+    function setEngine(engine) {
+      activeEngine = engine;
       
